@@ -188,3 +188,123 @@ const result2 : Details = {
     name : "Kenil",
     marks : 100
 } 
+
+/**
+ * We want to define a common type for authentication forms
+ * this common type will take multiple parameters
+ * - name of the form
+ * - how to handle submition of the form
+ * - how to handle reset of the form
+ * - what should be the text of the submiting button
+ */
+
+interface AuthForm {
+    name : string,
+    submitButtonText : string,
+    onReset : (e : any) => void,
+    onSubmit : (e : any) => void
+} 
+
+// what is the benifit of defining the interface here? 
+// Ans -> We can define a contract, that at any point of time , anywhere in your application ; somebody has to create a kind of like a form , which is somehow handling any authentication, they have to always fullfill this interface.
+const loginForm : AuthForm = {
+    name : "Login Form",
+    submitButtonText : "Login",
+    onReset: () => {
+        // some implementation
+    },
+    onSubmit : () => {
+        // some implementation
+    }
+}
+
+
+// types vs interface
+
+type text = string
+
+// for defining custom types for arrays, type keyword is more easy
+type stringArray = string[]
+
+// using an interface we will define an object which will be always having keys of type number and value to be of the type of the array  
+interface numberArray {
+    [index : number] : number
+}
+
+// Let's say we want to define a pair of a triplet or a custom tuple (set of x values)
+type pair1 = [number , number]
+type triplate = [number , number , number]
+
+interface pair2 {
+    first : number,
+    second : number
+}
+
+// Can type and interfaces represent functions ?
+type logger = (msg : string , errorCode : number) => void
+
+interface loggerInterface {
+    // logg : (msg : string , errorCode : number) => void
+    (msg : string , errorCode : number) : void
+}
+
+// Defining unions is possible with type but not interfaces
+type unionOfStringAndNumber = number | string
+
+interface ComplexNumber {
+    real : number,
+    imaginary : number
+}
+
+interface ComplexNumber {
+    add : (num : ComplexNumber) => ComplexNumber
+}
+
+// above both and below one is equivalent
+/**
+ * interface ComplexNumber {
+    real : number,
+    imaginary : number
+    add : (num : ComplexNumber) => ComplexNumber
+    }
+ */
+
+type Complex = {
+    real : number,
+    imag : number
+}
+
+interface IComplex {
+    real : number,
+    imag : number
+}
+
+let complex1 : Complex = {
+    real : 10,
+    imag : 10
+}
+
+let complex2 : IComplex = {
+    real : 10,
+    imag : 10
+}
+
+console.log(complex1)
+
+complex1 = complex2  // TS will consider Complex and IComplex same because the members are same. 
+// names are diffrent , still it does not matter
+
+console.log(complex1)
+
+// type Complex = {
+//     real : number,
+//     imag : number
+// }
+
+// still we can assign IComplex variable to Complex variable , because TS demands bareMinimum proparties that needed to assign Complex.
+
+// interface IComplex {
+//     real : number,
+//     imag : number,
+//     add : () => void 
+// }
